@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+    <title>Trivia</title>
+
+    <!--Bootstrap Cdn-->`
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!--CSS Link-->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+    <!--jQuery Cdn-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Trivia Game</h1>
+            <img src="assets/images/background.jpg" alt="Albert Einstein" width="200" height="200">
+
+            <div class="btnContainer">
+
+                <button type="button" class="btn btn-default btn-lg btn-primary startBtn">START</button>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            //global variables 
+            var hiddenImage = false;
+            var qCounter = 0;
+            var time = 15;
+
+            var questions = {
+                q1: ['what does html stand for?'],
+                q2: ['what does javascript stand for?'],
+            };
+            var answers = {
+                answers1: [{
+                    a: 'hyper time makeup language',
+                    b: 'hyper text markup link',
+                    c: 'hyper text markup language'
+                }],
+
+                answers2: [{
+                    a: 'hyper time makeup language',
+                    b: 'hyper text markup link',
+                    c: 'hyper text markup language'
+                }],
+
+            };
+            var correctAnswer;
+            var wrongAnswer;
+            var interval;
+
+            //functions
+            console.log(questions.q2);
+            console.log(answers.answers1[0] * 1);
+
+            function startGame() {
+
+            }
+
+            function gamePlay() {
+                $('.startBtn').on('click', function () {
+                    //  hides button
+                    $('.startBtn').hide();
+                    timeCount();
+                    question1();
+                    choseCheckAnswer();
+
+                });
+            }
+
+            function timeCount() {
+                time = 10;
+                interval = setInterval(timeRemaining, 1000);
+                $('.btnContainer').append('<div class="timeRemaining">' +
+                    'Time Remaining: ' + '<div class="timerCountDown"></div>' + '</div>');
+            }
+
+            // Print time left to DOM (when timer is at 0 stop)
+            function timeRemaining() {
+                // decrease time by 1
+                time--;
+                //Print time remaining
+                $('.timerCountDown').text(time + 'seconds');
+                console.log(time);
+                // When time gets to 0
+                if (time === 0) {
+                    console.log('time = ' + time);
+                    // stop when at 0
+                    clearInterval(interval);
+                    // remove button
+                    $('button').remove();
+                    // removes question
+                    $('.questionInput').remove();
+
+                    //  displays right answer
+                    disCorrectAnsw();
+                }
+            }
+
+            function disCorrectAnsw() {
+                // displays right answer
+
+                if (qCounter === 1) {
+                    var newDiv = $('<div class="correctAnsw">');
+                    correctAnswer = newDiv.text(' Time is up ' + ' The correct answer is ' + answers.answers1[0].c);
+                    $('.btnContainer').append(correctAnswer);
+                    // remove correct answer after 5 seconds; next question
+                    setTimeout(function () {
+
+                        $('div').remove('.correctAnsw');
+                        $('div').remove('.timeRemaining');
+                        timeCount();
+                        question2();
+                        choseCheckAnswer();
+
+                    }, 5000);
+
+                }
+
+            }
+
+            function question1() {
+                qCounter++;
+                // input question to questionInput
+                $('.btnContainer').append('<div class="questionInput">' + questions.q1 + '</div>');
+                // add answers
+                $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers1[0].a + '</button>');
+                // add answers
+                $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers1[0].b + '</button>');
+                // add answers
+                $('.btnContainer').append('<button class="answerVal" value=1>' + answers.answers1[0].c + '</button>');
+            }
+
+            function question2() {
+                qCounter++;
+                // input question to questionInput
+                $('.btnContainer').append('<div class="questionInput">' + questions.q2 + '</div>');
+                // add answers
+                $('.btnContainer').append('<button class="answerVal" value=1>' + answers.answers2[0].a + '</button>');
+                // add answers
+                $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers2[0].b + '</button>');
+                // add answers
+                $('.btnContainer').append('<button class="answerVal" value=0>' + answers.answers2[0].c + '</button>');
+            }
+
+
+            function choseCheckAnswer() {
+                $('button').on('click', function () {
+                    // gets value of button clicked
+                    var checkRightAnswer = $(this).attr('value');
+                    console.log(checkRightAnswer);
+                    // when the answer is selected stop the time
+                    clearInterval(interval);
+                    // if attribute value of check answer is one 
+                    if (checkRightAnswer == 1) {
+                        console.log('correct');
+                        // remove button 
+                        $('button').remove();
+                        // remove question
+                        $('.questionInput').remove();
+                    }
+                });
+            }
+
+            gamePlay();
+        </script>
+
+</body>
+
+</html>
